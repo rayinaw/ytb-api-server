@@ -1,5 +1,6 @@
 const Video = require("../models/video");
 const History = require("../models/history");
+const { getVideoFromAPI } = require("../services/youtubeAPI");
 
 const getVideo = async (req, res) => {
   const videoId = req.query.videoId;

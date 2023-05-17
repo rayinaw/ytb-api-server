@@ -9,14 +9,15 @@ const getVideoFromAPI = async (videoId) => {
     );
     // const videoData = response.data;
     // return videoData;
+    //console.log(response);
     const videos = response.data.items.map((item) => {
       return {
-        videoId: item.id.videoId,
+        videoId: item.id,
         etag: item.etag,
         title: item.snippet.title,
         channelId: item.snippet.channelId,
         channelTitle: item.snippet.channelTitle,
-        publishTime: item.snippet.publishTime,
+        publishTime: item.snippet.publishedAt,
         thumbnails: item.snippet.thumbnails,
       };
     });
@@ -45,7 +46,7 @@ const getHomeVideoFromAPI = async () => {
         thumbnails: item.snippet.thumbnails,
       };
     });
-    //console.log(videosData);
+
     for (const video of videos) {
       await Video.create(video);
     }
