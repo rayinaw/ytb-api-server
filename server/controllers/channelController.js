@@ -6,8 +6,6 @@ const infoChannel = async (req, res) => {
 
     const { username } = req.user;
 
-    await History.create({ username, searchQuery });
-
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics",
       {
@@ -32,8 +30,6 @@ const allVideo = async (req, res) => {
     const channelId = req.query.id;
 
     const { username } = req.user;
-
-    await History.create({ username, searchQuery });
 
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics",
