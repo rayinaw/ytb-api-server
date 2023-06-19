@@ -3,12 +3,9 @@ const httpProxy = require('http-proxy');
 
 // Cấu hình danh sách server chứa dữ liệu video
 let servers = [
-  { url: 'http://server1:5001', weight: 1, alive: true },
-  { url: 'http://server2:5002', weight: 1, alive: true }
+  { url: 'http://server1:5000', weight: 1, alive: true },
+  { url: 'http://server2:5000', weight: 1, alive: true }
 ];
-
-// Tính tổng trọng số của tất cả các server
-const totalWeight = servers.reduce((sum, server) => sum + server.weight, 0);
 
 // Khởi tạo proxy server
 const proxy = httpProxy.createProxyServer({});

@@ -4,21 +4,19 @@ const infoChannel = async (req, res) => {
   try {
     const channelId = req.query.id;
 
-    const { username } = req.user;
-
     const response = await axios.get(
-      "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics",
+      "https://www.googleapis.com/youtube/v3/channels",
       {
         params: {
           part: "snippet,statistics",
-          channelId: channelId,
+          id: channelId,
           maxResults: 20,
           key: process.env.API_KEY,
         },
       }
     );
 
-    res.json(response);
+    res.json(response.data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -29,13 +27,11 @@ const allVideo = async (req, res) => {
   try {
     const channelId = req.query.id;
 
-    const { username } = req.user;
-
     const response = await axios.get(
-      "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics",
+      "https://www.googleapis.com/youtube/v3/search",
       {
         params: {
-          part: "snippet,statistics",
+          part: "snippet",
           //id: channelId,
           maxResults: 50,
           type: "video",
@@ -46,7 +42,7 @@ const allVideo = async (req, res) => {
       }
     );
 
-    res.json(response);
+    res.json(response.data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
