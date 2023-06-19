@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  server1:
+    image: api-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5000
+    networks:
+      - app-network
+  server2:
+    image: api-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5002:5000
+    networks:
+      - app-network
+  load_balancer:
+    image: load-balancer
+    build:
+      context: ./load_balancer
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - server1
+      - server2
+    networks:
+      - app-network
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

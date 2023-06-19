@@ -1,6 +1,13 @@
 const axios = require("axios");
 const Video = require("../models/video");
 const API_KEY = process.env.API_KEY;
+const Redis = require("ioredis");
+
+const redis = new Redis({
+  host: 'redis',
+  port: 6379,
+});
+
 
 const getVideoFromAPI = async (videoId) => {
   try {
@@ -29,6 +36,13 @@ const getVideoFromAPI = async (videoId) => {
 };
 const getHomeVideoFromAPI = async () => {
   try {
+    const isUpdating = await redis.get("isUpdating");
+    if (isUpdating) {
+      console.log("Another server is currently updating the data.");
+      return { success: false };
+    }
+    await redis.set("isUpdating", true);
+    console.log("Start updating data...");
     await Video.deleteMany();
 
     const response = await axios.get(
@@ -50,6 +64,9 @@ const getHomeVideoFromAPI = async () => {
     for (const video of videos) {
       await Video.create(video);
     }
+
+    console.log("Data updated successfully!");
+    await redis.del("isUpdating");
 
     return { success: true };
   } catch (error) {
